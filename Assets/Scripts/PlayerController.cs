@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float groundCheckRadius = 0.2f;
     [SerializeField] Vector3 groundCheckOffset;
     [SerializeField] LayerMask groundLayer;
-
+    [SerializeField] private GameManager _gameManager;
     
     
     bool isGrounded;
@@ -46,10 +46,11 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
+        
        DetectInteract();
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = _gameManager.isAction ? 0 : Input.GetAxis("Horizontal");
+        float v = _gameManager.isAction ? 0 : Input.GetAxis("Vertical");
 
         float moveAmount = Mathf.Clamp01(Mathf.Abs(h) + Mathf.Abs(v));
         
@@ -62,17 +63,11 @@ public class PlayerController : MonoBehaviour
         velocity = Vector3.zero;
 
         GroundCheck();
-        //animator.SetBool("IsGrounded", isGrounded);
         if(isGrounded)
         {
             velocity = desiredMoveDir * moveSpeed;
             ySpeed = -0.5f;
-            //IsOnLedge = environmentScanner.LedgeCheck(desiredMoveDir, out LedgeData ledgeData);
-            // if(IsOnLedge)
-            // {
-            //     LedgeData = ledgeData;
-            //     //LedgeMovement();
-            // }
+
             animator.SetFloat("Speed", velocity.magnitude / moveSpeed, 0.2f, Time.deltaTime);
         }
         else

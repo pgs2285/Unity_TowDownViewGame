@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HP
   - Obstacle
+  - npc
   layers:
   - Default
   - TransparentFX
